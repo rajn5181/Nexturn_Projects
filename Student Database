@@ -1,0 +1,127 @@
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Linq;
+
+class Program
+{
+    public class Student
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string City { get; set; }
+        public Student(int id, string name, string city)
+        {
+            Id = id;
+            Name = name;
+            City = city;
+        }
+        public static void Display(List<Student> list)
+        {
+            Console.WriteLine("ID" + "\t\t" + "Name" + "\t\t" + "City");
+            foreach (Student student in list)
+            {
+                Console.WriteLine(student.Id + "\t\t" +  student.Name  +  "\t\t"  +  student.City);
+            }
+
+
+        }
+        public static void Update_details(int id,List<Student>list)
+        {
+            Student s = list.Single(s => s.Id == id);
+            Console.WriteLine("which options is do you want to change.\n 1) Name \n 2) City");
+            int options=Convert.ToInt32(Console.ReadLine());
+            if (options == 1)
+            {
+                Console.WriteLine("Enter the Name");
+                string nam=Console.ReadLine();
+                s.Name = nam;
+            }
+            else
+            {
+                Console.WriteLine("Enter the City Name");
+                String city_name=Console.ReadLine();
+                s.City=city_name;
+            }
+        }
+        public static void delete_details(int id, List<Student> list)
+        {
+            Student s = list.Single(s => s.Id == id);
+            list.Remove(s);
+
+        }
+
+    }
+    public static void Main(string[] args)
+    {
+        List<Student> list = new List<Student>();
+        Console.WriteLine("Which operations do you want to excute: \n 1)List students \n 2)Create new student \n 3)Update student details \n 4)Delete student \n 5)Filter the data by city Name\n 6)Exit");
+        //int fun_id = Convert.ToInt16(Console.ReadLine());
+        bool run = true;
+        while (run)
+        {
+            int fun_id = Convert.ToInt16(Console.ReadLine());
+            switch (fun_id)
+            {
+                case 1:
+                    if (list.Count == 0)
+                    {
+                        Console.WriteLine("Data is Empty,Please Enter the data");
+                
+
+                    }
+                    else
+                    {
+                        Student.Display(list);
+
+                    }
+                    break;
+                case 2:
+                    Console.WriteLine("How many data do you want to enter");
+                    int num = Convert.ToInt16(Console.ReadLine());
+                    for (int i = 0; i < num; i++)
+                    {
+                        Console.WriteLine("Enter Student Id");
+                        int id = Convert.ToInt16(Console.ReadLine());
+                        Console.WriteLine("Enter Student Name");
+                        string name = Console.ReadLine();
+                        Console.WriteLine("Enter Student City");
+                        string city = Console.ReadLine();
+                        list.Add(new Student(id, name, city));
+                    }
+                    break;
+
+                case 3:
+                    //update the students details
+                    //Console.WriteLine("Which Id you want to chnge:");
+                    Student.Display(list);
+                    Console.WriteLine("Please select student Id:");
+                    int idd= Convert.ToInt16(Console.ReadLine());
+                    //Console.WriteLine("which options is do you want to change.\n 1) Name \n 2) City");
+                    //int id_no= Convert.ToInt16(Console.ReadLine());
+                    Student.Update_details(idd, list);
+                    break;
+
+                case 4:
+                    Console.WriteLine("Enter the id:");
+                    int a= Convert.ToInt16(Console.ReadLine());
+                    Student.delete_details(a, list);
+                    break;
+                case 5:
+                    Console.WriteLine("Enter the city name");
+                    string city_name= Console.ReadLine();
+                    var res = list.Where(s => s.City == city_name);
+                    foreach(var s in res)
+                    {
+                        Console.WriteLine(s.Id + "\t\t" + s.Name + "\t\t" + s.City);
+                    }
+                    break;
+                case 6:
+                   // Console.WriteLine("Hello");
+                    run=false;
+                    break;
+
+            }
+           
+        }
+    }
+ }
